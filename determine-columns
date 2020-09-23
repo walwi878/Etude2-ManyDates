@@ -1,0 +1,127 @@
+/*
+Problem: Numbers beginning in 0 or numbers that
+ are one single digit are either days or months
+ (not years). Also if a number is 4 digits long
+ it must be the years column.
+ */
+
+/* Possible approaches:
+Could take the input (i.e. the row containing the whole date) and for each column in the date, break the number into it's
+thousands, hundreds, tens and ones columns i.e. 09 goes into 0 and 9.
+If 0 is present at in the tens column, then it is either a day or a month.
+
+Implementation:
+
+int[] input = new int[col1, col2, col3];
+int dayCol, monthCol, yearCol;
+public findColumnNames(int[] input){
+  int th,h,t,o;  // Thousands,hundreds,tens,ones
+
+  o=input%10;
+  t=(input/10)%10;
+  h=(input/100)%10;
+  th=input/1000;
+
+  for (int col : input){
+    System.out.println("Thousands = " +th+ ",\nHundreds = " +h ",\nTens = " +t+ ",\nOnes = " +o);
+    if (t == 0){
+      monthCol or dayCol = col;
+    }
+    if (th > 0){
+      yearCol = col;
+    }
+  }
+
+
+Another approach - use regex to see if each column in the date fits into it's valid range, and if it does, set
+the default format to d/m/y. (We could change this to be a different order though).
+
+regex for days from range 1-31, including format 0d:
+\b(0?[1-9]|[1-2][0-9]|[3][01?])\b
+
+regex for months in range 1-12, including format 0m:
+\b(0?[1-9]|[1][0-2])\b
+
+regex for 4-digit-long year: \b\d{4}\b
+
+Implementation:
+
+import java.util.regex.*;
+
+int[] input = new int[col1, col2, col3];
+int dayCol, monthCol, yearCol;
+public findColumnNames(int[] input){
+  for (int col : input){
+    if (col.matches(\b(0?[1-9]|[1-2][0-9]|[3][01?])\b){
+      dayCol = col;
+    } else if (col.matches(\b(0?[1-9]|[1][0-2])\b){
+      monthCol = col;
+    } else if (col.matches(\b\d{4}\b){
+      yearCol = col;
+    } else {
+    System.out.println("Column in given date does not match valid range for any column for days, months or years");
+  }
+}
+
+
+Other things to potentially add:
+
+//remember to convert d format from 0d first just in case
+String monthString;
+switch (monthCol){
+  case 1:
+    monthString = "Jan";
+    break;
+  case 2:
+    monthString = "Feb";
+    break;
+  case 3:
+    monthString = "Mar";
+    break;
+  case 4:
+    monthString = "Apr";
+    break;
+  case 5:
+    monthString = "May";
+    break;
+  case 6:
+    monthString = "Jun";
+    break;
+  case 7:
+    monthString = "Jul";
+    break;
+  case 8:
+    monthString = "Aug";
+    break;
+  case 9:
+    monthString = "Sep";
+    break;
+  case 10:
+    monthString = "Oct";
+    break;
+  case 11:
+    monthString = "Nov";
+    break;
+  case 12:
+    monthString = "Dec";
+    break;
+  default:
+    System.out.println("Month not in valid range from 1-12.")
+}
+
+/*declare and initialise number of days in each month */
+int[] jan = new int[31];
+int[] feb = new int[29];
+int[] mar = new int[31];
+int[] apr = new int[30];
+int[] may = new int[31];
+int[] jun = new int[30];
+int[] jul = new int[31];
+int[] aug = new int[31];
+int[] sep = new int[30];
+int[] oct = new int[31];
+int[] nov = new int[30];
+int[] dec = new int[31];
+
+int[] daysInEachMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+int daysInMay = daysInEachMonth[4]
